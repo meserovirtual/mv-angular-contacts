@@ -5,12 +5,12 @@
 
     if (currentScriptPath.length == 0) {
         //currentScriptPath = window.installPath + '/ac-angular-usuarios/includes/ac-usuarios.php';
-        currentScriptPath = window.installPath + '/ac-angular-contacts/includes/ac-contacts.php';
+        currentScriptPath = window.installPath + '/mv-angular-contacts/includes/mv-contacts.php';
     } else {
-        currentScriptPath = currentScriptPath.replace('ac-contacts.js', 'includes/ac-contacts.php');
+        currentScriptPath = currentScriptPath.replace('mv-contacts.js', 'includes/mv-contacts.php');
     }
 
-    angular.module('acContacts', ['ngRoute'])
+    angular.module('mvContacts', ['ngRoute'])
         .controller('ContactoController', ContactoController)
         .service('ContactsService', ContactsService);
 
