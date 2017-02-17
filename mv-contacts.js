@@ -21,8 +21,8 @@
 
     }
 
-    ContactsService.$inject = ['$http', '$timeout'];
-    function ContactsService($http, $timeout) {
+    ContactsService.$inject = ['$http', '$timeout', 'ErrorHandler', '$q'];
+    function ContactsService($http, $timeout, ErrorHandler, $q) {
         var vm = this;
         var service = {};
         vm.enviado = false;
@@ -58,11 +58,9 @@
          * @param nombre
          * @param asunto
          * @param mensaje
-         * @param callback
          * @returns {*}
          */
-        function sendMail(mail_origen, mails_destino, nombre, asunto, mensaje, callback) {
-
+        function sendMail(mail_origen, mails_destino, nombre, asunto, mensaje) {
             return $http.post(currentScriptPath,
                 {
                     'mail_origen': mail_origen,
@@ -71,20 +69,17 @@
                     'asunto': asunto,
                     'mensaje': mensaje
                 })
-                .success(
-                    function (data) {
-
-                        $timeout(hideMessage, 3000);
-
-                        function hideMessage() {
-                            callback(data, true);
-                        }
-
-                        //goog_report_conversion('http://www.ac-desarrollos.com/#');
-                    })
-                .error(function (data) {
-                    console.log(data);
+                .then(function (data) {
+                    $timeout(hideMessage, 500);
+                    function hideMessage() {
+                        return data;
+                    }
+                    //goog_report_conversion('http://www.ac-desarrollos.com/#');
+                })
+                .catch(function (data) {
+                    ErrorHandler(data);
                 });
         }
+        
     }
 })();
